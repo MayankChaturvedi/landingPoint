@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<title>ZNMD</title>
+</head>
+<body>
+    <script>
+    	function userAction(){
+
+    		document.getElementById("p2").innerHTML = "Loading Results";
+    		
+			var selectedFile = document.getElementById('usrInput').files[0];
+			var form = new FormData();
+			form.append("image", selectedFile, "Unknown.jpeg");
+
+			var settings = {
+			  "url": "https://faceclassifier.onrender.com/predict",
+			  "method": "POST",
+			  "timeout": 0,
+			  "processData": false,
+			  "mimeType": "multipart/form-data",
+			  "contentType": false,
+			  "data": form
+			};
+
+			$.ajax(settings).done(function (response) {
+				var fin = JSON.parse(response);
+				document.getElementById("p2").innerHTML = "Your face matches with:";
+				document.getElementById("p1").innerHTML = fin.category;
+			  console.log(response);
+			});
+		}
+    </script>
+    <input type='file' id="usrInput" />
+    <button type="submit" onclick="userAction()">Search</button>
+    <p id="p2"></p>
+    <p id="p1"></p>
+</body>
+</html>
